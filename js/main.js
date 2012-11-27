@@ -1,1 +1,5 @@
-var c = new Controller();
+$(document).ready(function(){
+
+    var c = new Controller();
+
+});
