@@ -1,1 +1,1 @@
-
+var c = new Controller();
