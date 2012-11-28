@@ -18,7 +18,7 @@ View = function() {
 
     };
 
-    this.rings = [{type: 'end', color: 'red', x: 500, y: 200, r: 50, width: 20, alpha: 1}];
+    this.rings = [{type: 'end', color: 'red', x: 500, y: 250, r: 50, width: 20, alpha: 1},{type: 'end', color: 'red', x: 250, y: 100, r: 30, width: 20, alpha: 1}];
 
     this.drawRing = function(ring){
 
@@ -37,6 +37,8 @@ View = function() {
 
     };
 
+    this.t = true;
+
     this.drawAllRings = function(){
 
         this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
@@ -49,15 +51,20 @@ View = function() {
             this.rings[rId].alpha = 0.99 * this.rings[rId].alpha;
             this.rings[rId].width = 0.99 * this.rings[rId].width;
             this.rings[rId].r = 0.99 * this.rings[rId].r;
-            if(this.rings[rId].alpha > 0.1 && this.rings[rId].width > 1 && this.rings[rId].r > 1){
-                setTimeout(function(){that.drawAllRings();},5);
+            if(this.rings[rId].alpha < 0.1 || this.rings[rId].width < 1 || this.rings[rId].r < 1){
+                this.t = false;
             }
+        }
+
+        if(this.t){
+            setTimeout(function(){that.drawAllRings();},10);
         }
 
     };
 
     this.resizeLayout = function(h,w) {
-        this.rings = [{type: 'end', color: 'red', x: 500, y: 200, r: 50, width: 20, alpha: 1}];
+        this.rings = [{type: 'end', color: 'red', x: 500, y: 250, r: 50, width: 20, alpha: 1},{type: 'end', color: 'red', x: 250, y: 100, r: 30, width: 20, alpha: 1}];
+        this.t = true;
         this.init();
     };
 
