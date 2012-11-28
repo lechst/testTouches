@@ -105,7 +105,7 @@ textarea {
     display:-webkit-box; /* Safari and Chrome */
     -webkit-box-orient:vertical;
     display:box;
-    box-orient:horizontal;
+    box-orient:vertical;
 }
 
 #touchBox {
