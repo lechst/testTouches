@@ -3,7 +3,7 @@ View = function() {
     this.init = function(){
 
         this.mainLayout();
-        this.draw();
+        this.drawAllRings();
 
     };
 
@@ -18,39 +18,46 @@ View = function() {
 
     };
 
-    this.i = 0;
+    this.rings = [{type: 'end', color: 'red', x: 500, y: 200, r: 50, width: 20, alpha: 1}];
 
-    this.draw = function(){
+    this.drawRing = function(ring){
 
-        var x = this.mainCanvas.width;
-        var y = this.mainCanvas.height;
-        var a = this.i/100;
-        var r = Math.min(x/4,y/4)*this.i/100;
-        var w = 20*this.i/100;
+        var x = ring.x;
+        var y = ring.y;
+        var a = ring.alpha;
+        var r = ring.r;
+        var w = ring.width;
 
-        this.mainCtx.clearRect(0,0,x,y);
-
-        this.mainCtx.strokeStyle = 'rgba(255,0,0,'+a+')';
+        this.mainCtx.globalAlpha = a;
+        this.mainCtx.strokeStyle = ring.color;
         this.mainCtx.lineWidth = w;
         this.mainCtx.beginPath();
         this.mainCtx.arc(x/2,y/2,r,0,2*Math.PI);
         this.mainCtx.stroke();
 
-        this.i++;
+    };
+
+    this.drawAllRings = function(){
+
+        this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
 
         var that = this;
 
-        if(this.i<100){
-            setTimeout(function(){that.draw();},10);
-        }
-
-        if(this.i>=100){
-            this.i=0;
+        for (var rId in this.rings)
+        {
+            this.drawRing(this.rings[rId]);
+            this.rings[rId].alpha = 0.99 * this.rings[rId].alpha;
+            this.rings[rId].width = 0.99 * this.rings[rId].width;
+            this.rings[rId].r = 0.99 * this.rings[rId].r;
+            if(this.rings[rId].alpha > 0.1 && this.rings[rId].width > 1 && this.rings[rId].r > 1){
+                setTimeout(function(){that.drawAllRings();},5);
+            }
         }
 
     };
 
     this.resizeLayout = function(h,w) {
+        this.rings = [{type: 'end', color: 'red', x: 500, y: 200, r: 50, width: 20, alpha: 1}];
         this.init();
     };
 
