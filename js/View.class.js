@@ -55,14 +55,15 @@ View = function() {
         this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
 
         var that = this;
+        var steps = 20;
 
         for (var rId in this.rings)
         {
             this.drawRing(this.rings[rId]);
             if(this.rings[rId].type=='start'){
-                this.rings[rId].alpha = 1.0075 * this.rings[rId].alpha;
-                this.rings[rId].width = 1.005 * this.rings[rId].width;
-                this.rings[rId].r = 1.01 * this.rings[rId].r;
+                this.rings[rId].alpha = this.rings[rId].alpha + 1/steps;
+                this.rings[rId].width = this.rings[rId].width + 5/steps;
+                this.rings[rId].r = this.rings[rId].r + 20/steps;
                 if(this.rings[rId].r > 20){
                     this.rings[rId].type='steady';
                     this.rings[rId].alpha = 1;
@@ -104,7 +105,7 @@ View = function() {
         var newx = this.screenToCanvas(x,y)[0];
         var newy = this.screenToCanvas(x,y)[1];
         var col = this.generateColor();
-        this.rings.push({id: id, type: 'start', color: col, x: newx, y: newy, r: 1, width: 1, alpha: 0.1});
+        this.rings.push({id: id, type: 'start', color: col, x: newx, y: newy, r: 0, width: 0, alpha: 0});
         this.intervalOn(this.id);
         this.id++;
     };
