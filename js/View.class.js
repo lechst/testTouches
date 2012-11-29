@@ -18,7 +18,7 @@ View = function() {
 
     };
 
-    this.rings = [{type: 'end', color: 'red', x: 500, y: 250, r: 50, width: 20, alpha: 1},{type: 'end', color: 'red', x: 250, y: 100, r: 30, width: 20, alpha: 1}];
+    this.rings = [];
 
     this.drawRing = function(ring){
 
@@ -32,12 +32,12 @@ View = function() {
         this.mainCtx.strokeStyle = ring.color;
         this.mainCtx.lineWidth = w;
         this.mainCtx.beginPath();
-        this.mainCtx.arc(x/2,y/2,r,0,2*Math.PI);
+        this.mainCtx.arc(x,y,r,0,2*Math.PI);
         this.mainCtx.stroke();
 
     };
 
-    this.t = true;
+    this.timeoutOn = true;
 
     this.drawAllRings = function(){
 
@@ -48,26 +48,86 @@ View = function() {
         for (var rId in this.rings)
         {
             this.drawRing(this.rings[rId]);
-            this.rings[rId].alpha = 0.99 * this.rings[rId].alpha;
-            this.rings[rId].width = 0.99 * this.rings[rId].width;
-            this.rings[rId].r = 0.99 * this.rings[rId].r;
-            if(this.rings[rId].alpha < 0.1 || this.rings[rId].width < 1 || this.rings[rId].r < 1){
-                this.t = false;
+            if(this.rings[rId].type=='start'){
+                this.rings[rId].alpha = 1.0075 * this.rings[rId].alpha;
+                this.rings[rId].width = 1.005 * this.rings[rId].width;
+                this.rings[rId].r = 1.01 * this.rings[rId].r;
+                if(this.rings[rId].r > 20){
+                    this.rings[rId].type='steady';
+                    this.rings[rId].alpha = 1;
+                    this.rings[rId].width = 5;
+                    this.rings[rId].r = 20;
+                    this.timeoutOn = false;
+                } else {
+                    this.timeoutOn = true;
+                }
             }
         }
 
-        if(this.t){
-            setTimeout(function(){that.drawAllRings();},10);
+        if(this.timeoutOn){
+            setTimeout(function(){that.drawAllRings();},1);
         }
 
     };
 
     this.resizeLayout = function(h,w) {
-        this.rings = [{type: 'end', color: 'red', x: 500, y: 250, r: 50, width: 20, alpha: 1},{type: 'end', color: 'red', x: 250, y: 100, r: 30, width: 20, alpha: 1}];
-        this.t = true;
+        this.timeoutOn = true;
         this.init();
+    };
+
+    this.screenToCanvas = function(x,y){
+        var newx = x - 12;
+        var newy = y - 12;
+        return [newx,newy];
+    };
+
+    this.generateColor = function(){
+        var r = Math.floor(Math.random()*256);
+        var g = Math.floor(Math.random()*256);
+        var b = Math.floor(Math.random()*256);
+        var color = 'rgb('+r+','+g+','+b+')';
+        return color;
+    }
+
+    this.addRing = function(id,x,y){
+        var newx = this.screenToCanvas(x,y)[0];
+        var newy = this.screenToCanvas(x,y)[1];
+        var col = this.generateColor();
+        this.rings.push({id: id, type: 'start', color: col, x: newx, y: newy, r: 1, width: 1, alpha: 0.1});
+        this.timeoutOn = true;
+        this.drawAllRings();
     };
 
     this.init();
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

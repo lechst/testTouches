@@ -4,8 +4,128 @@ Controller = function(){
 
     this.init = function(){
 
-        this.bindResizeEvents();
+        this.device = this.checkDevice();
 
+        if(this.device.iphone||this.device.ipad||this.device.ipod) {
+            this.bindTouchEvents();
+            //this.bindGestureEvents();
+            //this.bindMouseEvents();
+        } else {
+            this.bindMouseEvents();
+        }
+
+        //this.bindResizeEvents();
+
+    };
+
+    this.bindMouseEvents = function() {
+        $('#touchBox')[0].addEventListener('click',this.clickEvent());
+    };
+
+    this.bindTouchEvents = function() {
+        $('#touchBox')[0].addEventListener('touchstart',this.touchStart(),false);
+        $('#touchBox')[0].addEventListener('touchmove',this.touchMove(),false);
+        $('#touchBox')[0].addEventListener('touchend',this.touchEnd(),false);
+        //$('body')[0].addEventListener('touchcancel',this.touchCancel(),false);
+    };
+
+    this.bindGestureEvents = function() {
+        $('#touchBox')[0].addEventListener('gesturestart',this.gestureStart(),false);
+        $('#touchBox')[0].addEventListener('gesturechange',this.gestureChange(),false);
+        $('#touchBox')[0].addEventListener('gestureend',this.gestureEnd(),false);
+    };
+
+    this.touchStart = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+            for(var i=0; i < e.changedTouches.length; i++){
+                var x = e.changedTouches[i].pageX;
+                var y = e.changedTouches[i].pageY;
+                var id = i;
+                that.view.addRing(id,x,y);
+            }
+        }
+    };
+
+    this.touchMove = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+
+
+        }
+    };
+
+    this.touchEnd = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+            if(e.touches.length==0){
+                //that.view.timeoutOn = false;
+            }
+
+        }
+    };
+
+    this.touchCancel = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+        }
+    };
+
+    this.gestureStart = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+        }
+    };
+
+    this.gestureChange = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+        }
+    };
+
+    this.gestureEnd = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+        }
+    };
+
+    this.clickEvent = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+            var x = e.pageX;
+            var y = e.pageY;
+            var id = 0;
+
+            that.view.addRing(id,x,y);
+
+        }
+    };
+
+    this.checkDevice = function(){
+        var ua = navigator.userAgent;
+        var checker = {
+            iphone: ua.match(/iPhone/),
+            ipod: ua.match(/iPod/),
+            ipad: ua.match(/iPad/),
+            blackberry: ua.match(/BlackBerry/),
+            android: ua.match(/Android/),
+            chrome: ua.match(/Chrome/),
+            firefox: ua.match(/Firefox/)
+        };
+        return checker;
     };
 
     this.bindResizeEvents = function() {
