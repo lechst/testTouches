@@ -2,6 +2,8 @@ Controller = function(){
 
     this.view = new View();
 
+    this.fingerId = 0;
+
     this.init = function(){
 
         this.device = this.checkDevice();
@@ -43,9 +45,11 @@ Controller = function(){
             for(var i=0; i < e.changedTouches.length; i++){
                 var x = e.changedTouches[i].pageX;
                 var y = e.changedTouches[i].pageY;
-                var id = i;
-                that.view.addRing(id,x,y);
+                var id = that.fingerId;
+                that.fingerId++;
+                that.view.startRing(id,x,y);
             }
+
         }
     };
 
@@ -54,7 +58,13 @@ Controller = function(){
         return function(e){
             e.preventDefault();
 
-
+            for(var i=0; i < e.changedTouches.length; i++){
+                var x = e.changedTouches[i].pageX;
+                var y = e.changedTouches[i].pageY;
+                var id = that.fingerId;
+                that.fingerId++;
+                that.view.moveRing(id,x,y);
+            }
 
         }
     };
@@ -64,8 +74,12 @@ Controller = function(){
         return function(e){
             e.preventDefault();
 
-            if(e.touches.length==0){
-                //that.view.timeoutOn = false;
+            for(var i=0; i < e.changedTouches.length; i++){
+                var x = e.changedTouches[i].pageX;
+                var y = e.changedTouches[i].pageY;
+                var id = that.fingerId;
+                that.fingerId++;
+                that.view.endRing(id,x,y);
             }
 
         }
@@ -107,9 +121,10 @@ Controller = function(){
 
             var x = e.pageX;
             var y = e.pageY;
-            var id = 0;
+            var id = that.fingerId;
+            that.fingerId++;
 
-            that.view.addRing(id,x,y);
+            that.view.startRing(id,x,y);
 
         }
     };

@@ -55,15 +55,17 @@ View = function() {
         this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
 
         var that = this;
-        var steps = 20;
+        var stepsStart = 20;
+        var stepsMove = 20;
+        var stepsEnd = 100;
 
         for (var rId in this.rings)
         {
             this.drawRing(this.rings[rId]);
             if(this.rings[rId].type=='start'){
-                this.rings[rId].alpha = this.rings[rId].alpha + 1/steps;
-                this.rings[rId].width = this.rings[rId].width + 5/steps;
-                this.rings[rId].r = this.rings[rId].r + 20/steps;
+                this.rings[rId].alpha = this.rings[rId].alpha + 1/stepsStart;
+                this.rings[rId].width = this.rings[rId].width + 5/stepsStart;
+                this.rings[rId].r = this.rings[rId].r + 20/stepsStart;
                 if(this.rings[rId].r > 20){
                     this.rings[rId].type='steady';
                     this.rings[rId].alpha = 1;
@@ -72,9 +74,23 @@ View = function() {
                     this.intervalOff(rId);
                 }
             }
+            else if(this.rings[rId].type=='move'){
+                this.rings[rId].alpha = this.rings[rId].alpha - 1/stepsMove;
+                if(this.rings[rId].alpha < 0.05){
+                    this.rings[rId].type='steady';
+                    this.intervalOff(rId);
+                }
+            }
+            else if(this.rings[rId].type=='end'){
+                this.rings[rId].alpha = this.rings[rId].alpha - 1/stepsEnd;
+                this.rings[rId].width = this.rings[rId].width - 5/stepsEnd;
+                this.rings[rId].r = this.rings[rId].r - 20/stepsEnd;
+                if(this.rings[rId].r < 1){
+                    this.rings[rId].type='steady';
+                    this.intervalOff(rId);
+                }
+            }
         }
-
-
 
         $('#messageBox').empty().append(this.i);
 
@@ -99,15 +115,28 @@ View = function() {
         return color;
     }
 
-    this.id = 0;
-
-    this.addRing = function(id,x,y){
+    this.startRing = function(id,x,y){
         var newx = this.screenToCanvas(x,y)[0];
         var newy = this.screenToCanvas(x,y)[1];
         var col = this.generateColor();
         this.rings.push({id: id, type: 'start', color: col, x: newx, y: newy, r: 0, width: 0, alpha: 0});
-        this.intervalOn(this.id);
-        this.id++;
+        this.intervalOn(id);
+    };
+
+    this.moveRing = function(id,x,y){
+        var newx = this.screenToCanvas(x,y)[0];
+        var newy = this.screenToCanvas(x,y)[1];
+        var col = this.generateColor();
+        this.rings.push({id: id, type: 'move', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
+        this.intervalOn(id);
+    };
+
+    this.endRing = function(id,x,y){
+        var newx = this.screenToCanvas(x,y)[0];
+        var newy = this.screenToCanvas(x,y)[1];
+        var col = this.generateColor();
+        this.rings.push({id: id, type: 'end', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
+        this.intervalOn(id);
     };
 
     this.init();
