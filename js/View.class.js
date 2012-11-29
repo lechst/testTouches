@@ -37,9 +37,20 @@ View = function() {
 
     };
 
-    this.timeoutOn = true;
+    this.interval = [];
+    this.intervalOn = function(i){
+        var that = this;
+        this.interval[i] = setInterval(function(){that.drawAllRings();},1);
+    };
+    this.intervalOff = function(i){
+        clearInterval(this.interval[i]);
+    };
+
+    this.i = 0;
 
     this.drawAllRings = function(){
+
+        this.i++;
 
         this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
 
@@ -57,16 +68,14 @@ View = function() {
                     this.rings[rId].alpha = 1;
                     this.rings[rId].width = 5;
                     this.rings[rId].r = 20;
-                    this.timeoutOn = false;
-                } else {
-                    this.timeoutOn = true;
+                    this.intervalOff(rId);
                 }
             }
         }
 
-        if(this.timeoutOn){
-            setTimeout(function(){that.drawAllRings();},1);
-        }
+
+
+        $('#messageBox').empty().append(this.i);
 
     };
 
@@ -89,13 +98,15 @@ View = function() {
         return color;
     }
 
+    this.id = 0;
+
     this.addRing = function(id,x,y){
         var newx = this.screenToCanvas(x,y)[0];
         var newy = this.screenToCanvas(x,y)[1];
         var col = this.generateColor();
         this.rings.push({id: id, type: 'start', color: col, x: newx, y: newy, r: 1, width: 1, alpha: 0.1});
-        this.timeoutOn = true;
-        this.drawAllRings();
+        this.intervalOn(this.id);
+        this.id++;
     };
 
     this.init();
