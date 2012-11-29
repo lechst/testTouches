@@ -56,7 +56,7 @@ View = function() {
 
         var that = this;
         var stepsStart = 20;
-        var stepsMove = 20;
+        var stepsMove = 100;
         var stepsEnd = 100;
 
         for (var rId in this.rings)
@@ -76,8 +76,9 @@ View = function() {
             }
             else if(this.rings[rId].type=='move'){
                 this.rings[rId].alpha = this.rings[rId].alpha - 1/stepsMove;
-                if(this.rings[rId].alpha < 0.05){
+                if(this.rings[rId].alpha < 0.01){
                     this.rings[rId].type='steady';
+                    this.rings[rId].alpha = 0;
                     this.intervalOff(rId);
                 }
             }
