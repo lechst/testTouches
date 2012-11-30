@@ -125,8 +125,8 @@ Controller = function(){
 
             var x = e.pageX;
             var y = e.pageY;
-            var id = that.fingerId;
-            that.fingerId++;
+            var id = that.eventId;
+            that.eventId++;
 
             that.view.startRing(id,x,y);
 
