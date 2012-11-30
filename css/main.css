@@ -143,24 +143,47 @@ canvas {
     box-flex:1.0;
 }
 
-#messageEventBox {
-
-}
-
 #messageTouchBox {
-
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display:-moz-box; /* Firefox */
+    -moz-box-orient:horizontal;
+    display:-webkit-box; /* Safari and Chrome */
+    -webkit-box-orient:horizontal;
+    display:box;
+    box-orient:horizontal;
 }
 
 #messageTouchesBox {
 
+    -moz-box-flex:1.0; /* Firefox */
+    -webkit-box-flex:1.0; /* Safari and Chrome */
+    box-flex:1.0;
 }
 
 #messageTargetBox {
 
+    -moz-box-flex:1.0; /* Firefox */
+    -webkit-box-flex:1.0; /* Safari and Chrome */
+    box-flex:1.0;
 }
 
 #messageChangedBox {
 
+    -moz-box-flex:1.0; /* Firefox */
+    -webkit-box-flex:1.0; /* Safari and Chrome */
+    box-flex:1.0;
+}
+
+p.title {
+    margin: 0px 0px 5px 5px;
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+p.info {
+    margin: 0px 0px 0px 5px;
 }
 
 

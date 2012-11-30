@@ -9,7 +9,7 @@ View = function() {
 
     this.mainLayout = function(){
 
-        $('body').empty().append('<div id="mainDiv"><div id="touchBox"><canvas></canvas><div id="targetBox"></div></div><div id="messageBox"></div></div>');
+        $('body').empty().append('<div id="mainDiv"><div id="touchBox"><canvas></canvas><div id="targetBox"></div></div><div id="messageBox"><div id="messageTouchBox"><div id="messageTouchesBox"><p class="title">touches:</p><div class="info"></div></div><div id="messageTargetBox"><p class="title">target:</p><div class="info"></div></div><div id="messageChangedBox"><p class="title">changed:</p><div class="info"></div></div></div></div></div>');
         this.mainCtnr = document.getElementById('mainDiv');
         this.mainCanvas = this.mainCtnr.getElementsByTagName('canvas')[0];
         this.mainCanvas.width = $('canvas').width();
@@ -46,11 +46,7 @@ View = function() {
         clearInterval(this.interval[i]);
     };
 
-    this.i = 0;
-
     this.drawAllRings = function(){
-
-        this.i++;
 
         this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
 
@@ -92,8 +88,6 @@ View = function() {
                 }
             }
         }
-
-        $('#messageBox').empty().append(this.i);
 
     };
 
