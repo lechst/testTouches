@@ -240,8 +240,11 @@ Controller = function(){
     };
 
     this.bindResizeEvents = function() {
-        window.addEventListener('resize', this.checkWindowSize(), false);
-        window.addEventListener('orientationchange', this.checkWindowSize(), false);
+        if(this.device.iphone||this.device.ipad||this.device.ipod) {
+            window.addEventListener('orientationchange', this.checkWindowSize(), false);
+        } else {
+            window.addEventListener('resize', this.checkWindowSize(), false);
+        }
     };
 
     this.checkWindowSize = function(){
@@ -250,11 +253,11 @@ Controller = function(){
 
         return function(e){
             e.preventDefault();
-            $('#touchBox')[0].removeEventListener('touchstart',arguments.callee,false);
-            $('#touchBox')[0].removeEventListener('touchmove',arguments.callee,false);
-            $('#touchBox')[0].removeEventListener('touchend',arguments.callee,false);
-            window.removeEventListener('resize', arguments.callee, false);
-            window.removeEventListener('orientationchange', arguments.callee, false);
+            if(that.device.iphone||that.device.ipad||that.device.ipod) {
+                window.removeEventListener('orientationchange',arguments.callee,false);
+            } else {
+                window.removeEventListener('resize',arguments.callee,false);
+            }
             that.eventId = 0;
             that.fingerId = [];
             var h = window.innerHeight;
