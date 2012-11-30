@@ -250,6 +250,11 @@ Controller = function(){
 
         return function(e){
             e.preventDefault();
+            $('#touchBox')[0].removeEventListener('touchstart',arguments.callee,false);
+            $('#touchBox')[0].removeEventListener('touchmove',arguments.callee,false);
+            $('#touchBox')[0].removeEventListener('touchend',arguments.callee,false);
+            window.removeEventListener('resize', arguments.callee, false);
+            window.removeEventListener('orientationchange', arguments.callee, false);
             that.eventId = 0;
             that.fingerId = [];
             var h = window.innerHeight;
