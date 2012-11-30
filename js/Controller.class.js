@@ -2,7 +2,8 @@ Controller = function(){
 
     this.view = new View();
 
-    this.fingerId = 0;
+    this.eventId = 0;
+    this.fingerId = [];
 
     this.init = function(){
 
@@ -45,9 +46,10 @@ Controller = function(){
             for(var i=0; i < e.changedTouches.length; i++){
                 var x = e.changedTouches[i].pageX;
                 var y = e.changedTouches[i].pageY;
-                var id = that.fingerId;
-                that.fingerId++;
+                var id = that.eventId;
+                that.eventId++;
                 that.view.startRing(id,x,y);
+                that.fingerId[e.changedTouches[i].identifier] = id;
             }
 
         }
@@ -61,9 +63,10 @@ Controller = function(){
             for(var i=0; i < e.changedTouches.length; i++){
                 var x = e.changedTouches[i].pageX;
                 var y = e.changedTouches[i].pageY;
-                var id = that.fingerId;
-                that.fingerId++;
-                that.view.moveRing(id,x,y);
+                var id = that.eventId;
+                var prevId = that.fingerId[e.changedTouches[i].identifier];
+                that.eventId++;
+                that.view.moveRing(id,prevId,x,y);
             }
 
         }
@@ -77,9 +80,10 @@ Controller = function(){
             for(var i=0; i < e.changedTouches.length; i++){
                 var x = e.changedTouches[i].pageX;
                 var y = e.changedTouches[i].pageY;
-                var id = that.fingerId;
-                that.fingerId++;
-                that.view.endRing(id,x,y);
+                var id = that.eventId;
+                var prevId = that.fingerId[e.changedTouches[i].identifier];
+                that.eventId++;
+                that.view.endRing(id,prevId,x,y);
             }
 
         }

@@ -56,8 +56,8 @@ View = function() {
 
         var that = this;
         var stepsStart = 20;
-        var stepsMove = 100;
-        var stepsEnd = 100;
+        var stepsMove = 30;
+        var stepsEnd = 50;
 
         for (var rId in this.rings)
         {
@@ -68,7 +68,7 @@ View = function() {
                 this.rings[rId].r = this.rings[rId].r + 20/stepsStart;
                 if(this.rings[rId].r > 20){
                     this.rings[rId].type='steady';
-                    this.rings[rId].alpha = 1;
+                    this.rings[rId].alpha = 0;
                     this.rings[rId].width = 5;
                     this.rings[rId].r = 20;
                     this.intervalOff(rId);
@@ -76,7 +76,7 @@ View = function() {
             }
             else if(this.rings[rId].type=='move'){
                 this.rings[rId].alpha = this.rings[rId].alpha - 1/stepsMove;
-                if(this.rings[rId].alpha < 0.01){
+                if(this.rings[rId].alpha < 1/stepsMove){
                     this.rings[rId].type='steady';
                     this.rings[rId].alpha = 0;
                     this.intervalOff(rId);
@@ -124,18 +124,18 @@ View = function() {
         this.intervalOn(id);
     };
 
-    this.moveRing = function(id,x,y){
+    this.moveRing = function(id,prevId,x,y){
         var newx = this.screenToCanvas(x,y)[0];
         var newy = this.screenToCanvas(x,y)[1];
-        var col = this.generateColor();
+        var col = this.rings[prevId].color;
         this.rings.push({id: id, type: 'move', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
         this.intervalOn(id);
     };
 
-    this.endRing = function(id,x,y){
+    this.endRing = function(id,prevId,x,y){
         var newx = this.screenToCanvas(x,y)[0];
         var newy = this.screenToCanvas(x,y)[1];
-        var col = this.generateColor();
+        var col = this.rings[prevId].color;
         this.rings.push({id: id, type: 'end', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
         this.intervalOn(id);
     };
