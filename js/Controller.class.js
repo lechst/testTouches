@@ -56,21 +56,27 @@ Controller = function(){
             for(var i=0; i < e.touches.length; i++){
                 var x = e.touches[i].pageX;
                 var y = e.touches[i].pageY;
-                $('#messageTouchesBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.touches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
 
             $('#messageTargetBox div.info').empty();
             for(var i=0; i < e.targetTouches.length; i++){
                 var x = e.targetTouches[i].pageX;
                 var y = e.targetTouches[i].pageY;
-                $('#messageTargetBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.targetTouches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
 
             $('#messageChangedBox div.info').empty();
             for(var i=0; i < e.changedTouches.length; i++){
                 var x = e.changedTouches[i].pageX;
                 var y = e.changedTouches[i].pageY;
-                $('#messageChangedBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.changedTouches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
         }
     };
@@ -93,21 +99,27 @@ Controller = function(){
             for(var i=0; i < e.touches.length; i++){
                 var x = e.touches[i].pageX;
                 var y = e.touches[i].pageY;
-                $('#messageTouchesBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.touches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
 
             $('#messageTargetBox div.info').empty();
             for(var i=0; i < e.targetTouches.length; i++){
                 var x = e.targetTouches[i].pageX;
                 var y = e.targetTouches[i].pageY;
-                $('#messageTargetBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.targetTouches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
 
             $('#messageChangedBox div.info').empty();
             for(var i=0; i < e.changedTouches.length; i++){
                 var x = e.changedTouches[i].pageX;
                 var y = e.changedTouches[i].pageY;
-                $('#messageChangedBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.changedTouches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
         }
     };
@@ -130,21 +142,27 @@ Controller = function(){
             for(var i=0; i < e.touches.length; i++){
                 var x = e.touches[i].pageX;
                 var y = e.touches[i].pageY;
-                $('#messageTouchesBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.touches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
 
             $('#messageTargetBox div.info').empty();
             for(var i=0; i < e.targetTouches.length; i++){
                 var x = e.targetTouches[i].pageX;
                 var y = e.targetTouches[i].pageY;
-                $('#messageTargetBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.targetTouches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
 
             $('#messageChangedBox div.info').empty();
             for(var i=0; i < e.changedTouches.length; i++){
                 var x = e.changedTouches[i].pageX;
                 var y = e.changedTouches[i].pageY;
-                $('#messageChangedBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+                var id = that.fingerId[e.changedTouches[i].identifier];
+                var col = that.view.rings[id].color;
+                $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
             }
         }
     };
@@ -188,18 +206,22 @@ Controller = function(){
             var id = that.eventId;
             that.eventId++;
 
+            that.fingerId[e.identifier] = id;
+
             that.view.startRing(id,x,y);
 
-            $('#messageTouchesBox div.info').empty();
-            $('#messageTouchesBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+            var prevId = that.fingerId[e.identifier];
+            var col = that.view.rings[prevId].color;
 
+            $('#messageTouchesBox div.info').empty();
+            $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
 
             $('#messageTargetBox div.info').empty();
-            $('#messageTargetBox div.info').append('<p class="info">'+x+' '+y+'</p>');
+            $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
 
             $('#messageChangedBox div.info').empty();
-            $('#messageChangedBox div.info').append('<p class="info">'+x+' '+y+'</p>');
-            
+            $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">'+x+' '+y+'</p>');
+
         }
     };
 
