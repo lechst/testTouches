@@ -3,7 +3,6 @@ View = function() {
     this.init = function(){
 
         this.mainLayout();
-        this.drawAllRings();
 
     };
 
@@ -15,6 +14,7 @@ View = function() {
         this.mainCanvas.width = $('canvas').width();
         this.mainCanvas.height = $('canvas').height();
         this.mainCtx = this.mainCanvas.getContext('2d');
+        this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
 
     };
 
@@ -92,7 +92,8 @@ View = function() {
     };
 
     this.resizeLayout = function(h,w) {
-        this.timeoutOn = true;
+        this.rings = [];
+        this.interval = [];
         this.init();
     };
 

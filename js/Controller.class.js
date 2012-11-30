@@ -17,7 +17,7 @@ Controller = function(){
             this.bindMouseEvents();
         }
 
-        //this.bindResizeEvents();
+        this.bindResizeEvents();
 
     };
 
@@ -248,10 +248,14 @@ Controller = function(){
 
         var that = this;
 
-        return function(){
+        return function(e){
+            e.preventDefault();
+            that.eventId = 0;
+            that.fingerId = [];
             var h = window.innerHeight;
             var w = window.innerWidth;
             that.view.resizeLayout(h,w);
+            that.init();
         }
 
     };
