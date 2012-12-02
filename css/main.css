@@ -153,6 +153,8 @@ canvas {
     -webkit-box-orient:horizontal;
     display:box;
     box-orient:horizontal;
+    overflow: hidden;
+    font-size: 12px;
 }
 
 #messageTouchesBox {
