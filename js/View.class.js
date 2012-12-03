@@ -107,7 +107,7 @@ View = function() {
         var l = 50;
         var color = 'hsl('+h+','+s+'%,'+l+'%)';
         return color;
-    }
+    };
 
     this.startRing = function(id,x,y){
         var newx = this.screenToCanvas(x,y)[0];

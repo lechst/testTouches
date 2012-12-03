@@ -38,86 +38,66 @@ Controller = function(){
         $('#touchBox')[0].addEventListener('gestureend',this.gestureEnd(),false);
     };
 
+    this.getMessageParametersOfCertainType = function(touchArray,type){
+        this.view.clearMessage(type);
+        for(var i=0; i < touchArray.length; i++){
+            var x = touchArray[i].pageX;
+            var y = touchArray[i].pageY;
+            var id = this.fingerId[touchArray[i].identifier];
+            var col = this.view.colors[id];
+            this.view.addMessage(type,col,x,y);
+        }
+    };
+
     this.getMessageParameters = function(e) {
-        this.view.clearMessage('touches');
-        for(var i=0; i < e.touches.length; i++){
-            var x = e.touches[i].pageX;
-            var y = e.touches[i].pageY;
-            var id = this.fingerId[e.touches[i].identifier];
-            var col = this.view.colors[id];
-            this.view.addMessage('touches',col,x,y);
-        }
 
-        this.view.clearMessage('target');
-        for(var i=0; i < e.targetTouches.length; i++){
-            var x = e.targetTouches[i].pageX;
-            var y = e.targetTouches[i].pageY;
-            var id = this.fingerId[e.targetTouches[i].identifier];
-            var col = this.view.colors[id];
-            this.view.addMessage('target',col,x,y);
-        }
+        this.getMessageParametersOfCertainType(e.touches,'touches');
+        this.getMessageParametersOfCertainType(e.targetTouches,'target');
+        this.getMessageParametersOfCertainType(e.changedTouches,'changed');
 
-        this.view.clearMessage('changed');
+    };
+
+    this.touchEventLoops = function(e,type){
+        e.preventDefault();
         for(var i=0; i < e.changedTouches.length; i++){
             var x = e.changedTouches[i].pageX;
             var y = e.changedTouches[i].pageY;
-            var id = this.fingerId[e.changedTouches[i].identifier];
-            var col = this.view.colors[id];
-            this.view.addMessage('changed',col,x,y);
+            var id = this.eventId;
+            this.eventId++;
+            if(type=='start'){
+                this.view.startRing(id,x,y);
+                this.fingerId[e.changedTouches[i].identifier] = id;
+            }
+            else if(type=='move'){
+                var prevId = this.fingerId[e.changedTouches[i].identifier];
+                this.view.moveRing(id,prevId,x,y);
+            }
+            else if(type=='end'){
+                var prevId = this.fingerId[e.changedTouches[i].identifier];
+                this.view.endRing(id,prevId,x,y);
+            }
         }
+        this.getMessageParameters(e);
     };
 
     this.touchStart = function(){
         var that = this;
         return function(e){
-            e.preventDefault();
-
-            for(var i=0; i < e.changedTouches.length; i++){
-                var x = e.changedTouches[i].pageX;
-                var y = e.changedTouches[i].pageY;
-                var id = that.eventId;
-                that.eventId++;
-                that.view.startRing(id,x,y);
-                that.fingerId[e.changedTouches[i].identifier] = id;
-            }
-
-            that.getMessageParameters(e);
+            that.touchEventLoops(e,'start');
         }
     };
 
     this.touchMove = function(){
         var that = this;
         return function(e){
-            e.preventDefault();
-
-            for(var i=0; i < e.changedTouches.length; i++){
-                var x = e.changedTouches[i].pageX;
-                var y = e.changedTouches[i].pageY;
-                var id = that.eventId;
-                var prevId = that.fingerId[e.changedTouches[i].identifier];
-                that.eventId++;
-                that.view.moveRing(id,prevId,x,y);
-            }
-
-            that.getMessageParameters(e);
+            that.touchEventLoops(e,'move');
         }
     };
 
     this.touchEnd = function(){
         var that = this;
         return function(e){
-            e.preventDefault();
-
-            for(var i=0; i < e.changedTouches.length; i++){
-                var x = e.changedTouches[i].pageX;
-                var y = e.changedTouches[i].pageY;
-                var id = that.eventId;
-                var prevId = that.fingerId[e.changedTouches[i].identifier];
-                that.eventId++;
-                that.view.endRing(id,prevId,x,y);
-            }
-
-            that.getMessageParameters(e);
+            that.touchEventLoops(e,'end');
         }
     };
 
