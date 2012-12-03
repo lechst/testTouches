@@ -8,13 +8,18 @@ View = function() {
 
     this.mainLayout = function(){
 
-        $('body').empty().append('<div id="mainDiv"><div id="touchBox"><canvas></canvas><div id="targetBox"></div></div><div id="messageBox"><div id="messageTouchBox"><div id="messageTouchesBox"><p class="title">touches:</p><div class="info"></div></div><div id="messageTargetBox"><p class="title">target:</p><div class="info"></div></div><div id="messageChangedBox"><p class="title">changed:</p><div class="info"></div></div></div></div></div>');
+        this.mainBody = document.body;
+        this.mainBody.innerHTML = '<div id="mainDiv"><div id="touchBox"><canvas></canvas><div id="targetBox"></div></div><div id="messageBox"><div id="messageTouchBox"><div id="messageTouchesBox"><p class="title">touches:</p><div class="info"></div></div><div id="messageTargetBox"><p class="title">target:</p><div class="info"></div></div><div id="messageChangedBox"><p class="title">changed:</p><div class="info"></div></div></div></div></div>';
         this.mainCtnr = document.getElementById('mainDiv');
         this.mainCanvas = this.mainCtnr.getElementsByTagName('canvas')[0];
-        this.mainCanvas.width = $('canvas').width();
-        this.mainCanvas.height = $('canvas').height();
+        this.mainCanvas.width = this.mainCanvas.offsetWidth;
+        this.mainCanvas.height = this.mainCanvas.offsetHeight;
         this.mainCtx = this.mainCanvas.getContext('2d');
         this.mainCtx.clearRect(0,0,this.mainCanvas.width,this.mainCanvas.height);
+        this.mainTouchBox = document.getElementById('touchBox');
+        this.mainMessageTouches = document.getElementsByClassName('info')[0];
+        this.mainMessageTarget = document.getElementsByClassName('info')[1];
+        this.mainMessageChanged = document.getElementsByClassName('info')[2];
 
     };
 
@@ -136,25 +141,25 @@ View = function() {
 
     this.clearMessage = function(type){
         if(type=='touches'){
-            $('#messageTouchesBox div.info').empty();
+            this.mainMessageTouches.innerHTML = '';
         }
         else if(type=='target'){
-            $('#messageTargetBox div.info').empty();
+            this.mainMessageTarget.innerHTML = '';
         }
         else if(type=='changed'){
-            $('#messageChangedBox div.info').empty();
+            this.mainMessageChanged.innerHTML = '';
         }
     };
 
     this.addMessage = function(type,col,x,y){
         if(type=='touches'){
-            $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+            this.mainMessageTouches.innerHTML = this.mainMessageTouches.innerHTML + '<p class="infoP" style="color:'+col+';">('+x+','+y+')</p>';
         }
         else if(type=='target'){
-            $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+            this.mainMessageTarget.innerHTML = this.mainMessageTarget.innerHTML + '<p class="infoP" style="color:'+col+';">('+x+','+y+')</p>';
         }
         else if(type=='changed'){
-            $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+            this.mainMessageChanged.innerHTML = this.mainMessageChanged.innerHTML + '<p class="infoP" style="color:'+col+';">('+x+','+y+')</p>';
         }
     };
 

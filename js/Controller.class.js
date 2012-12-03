@@ -22,20 +22,19 @@ Controller = function(){
     };
 
     this.bindMouseEvents = function() {
-        $('#touchBox')[0].addEventListener('click',this.clickEvent());
+        this.view.mainTouchBox.addEventListener('click',this.clickEvent());
     };
 
     this.bindTouchEvents = function() {
-        $('#touchBox')[0].addEventListener('touchstart',this.touchStart(),false);
-        $('#touchBox')[0].addEventListener('touchmove',this.touchMove(),false);
-        $('#touchBox')[0].addEventListener('touchend',this.touchEnd(),false);
-        //$('body')[0].addEventListener('touchcancel',this.touchCancel(),false);
+        this.view.mainTouchBox.addEventListener('touchstart',this.touchStart(),false);
+        this.view.mainTouchBox.addEventListener('touchmove',this.touchMove(),false);
+        this.view.mainTouchBox.addEventListener('touchend',this.touchEnd(),false);
     };
 
     this.bindGestureEvents = function() {
-        $('#touchBox')[0].addEventListener('gesturestart',this.gestureStart(),false);
-        $('#touchBox')[0].addEventListener('gesturechange',this.gestureChange(),false);
-        $('#touchBox')[0].addEventListener('gestureend',this.gestureEnd(),false);
+        this.view.mainTouchBox.addEventListener('gesturestart',this.gestureStart(),false);
+        this.view.mainTouchBox.addEventListener('gesturechange',this.gestureChange(),false);
+        this.view.mainTouchBox.addEventListener('gestureend',this.gestureEnd(),false);
     };
 
     this.getMessageParametersOfCertainType = function(touchArray,type){
@@ -98,13 +97,6 @@ Controller = function(){
         var that = this;
         return function(e){
             that.touchEventLoops(e,'end');
-        }
-    };
-
-    this.touchCancel = function(){
-        var that = this;
-        return function(e){
-            e.preventDefault();
         }
     };
 
