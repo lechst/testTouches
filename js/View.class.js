@@ -20,6 +20,8 @@ View = function() {
 
     this.rings = [];
 
+    this.colors = [];
+
     this.drawRing = function(ring){
 
         var x = ring.x;
@@ -63,19 +65,15 @@ View = function() {
                 this.rings[rId].width = this.rings[rId].width + 5/stepsStart;
                 this.rings[rId].r = this.rings[rId].r + 20/stepsStart;
                 if(this.rings[rId].r > 20){
-                    this.rings[rId].type='steady';
-                    this.rings[rId].alpha = 0;
-                    this.rings[rId].width = 5;
-                    this.rings[rId].r = 20;
-                    this.intervalOff(rId);
+                    this.intervalOff(this.rings[rId].id);
+                    this.rings.splice(rId,1);
                 }
             }
             else if(this.rings[rId].type=='move'){
                 this.rings[rId].alpha = this.rings[rId].alpha - 1/stepsMove;
                 if(this.rings[rId].alpha < 1/stepsMove){
-                    this.rings[rId].type='steady';
-                    this.rings[rId].alpha = 0;
-                    this.intervalOff(rId);
+                    this.intervalOff(this.rings[rId].id);
+                    this.rings.splice(rId,1);
                 }
             }
             else if(this.rings[rId].type=='end'){
@@ -83,8 +81,8 @@ View = function() {
                 this.rings[rId].width = this.rings[rId].width - 5/stepsEnd;
                 this.rings[rId].r = this.rings[rId].r - 20/stepsEnd;
                 if(this.rings[rId].r < 1){
-                    this.rings[rId].type='steady';
-                    this.intervalOff(rId);
+                    this.intervalOff(this.rings[rId].id);
+                    this.rings.splice(rId,1);
                 }
             }
         }
@@ -104,10 +102,10 @@ View = function() {
     };
 
     this.generateColor = function(){
-        var r = Math.floor(Math.random()*256);
-        var g = Math.floor(Math.random()*256);
-        var b = Math.floor(Math.random()*256);
-        var color = 'rgb('+r+','+g+','+b+')';
+        var h = Math.floor(Math.random()*360);
+        var s = 100;
+        var l = 50;
+        var color = 'hsl('+h+','+s+'%,'+l+'%)';
         return color;
     }
 
@@ -116,13 +114,14 @@ View = function() {
         var newy = this.screenToCanvas(x,y)[1];
         var col = this.generateColor();
         this.rings.push({id: id, type: 'start', color: col, x: newx, y: newy, r: 0, width: 0, alpha: 0});
+        this.colors[id] = col;
         this.intervalOn(id);
     };
 
     this.moveRing = function(id,prevId,x,y){
         var newx = this.screenToCanvas(x,y)[0];
         var newy = this.screenToCanvas(x,y)[1];
-        var col = this.rings[prevId].color;
+        var col = this.colors[prevId];
         this.rings.push({id: id, type: 'move', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
         this.intervalOn(id);
     };
@@ -130,9 +129,33 @@ View = function() {
     this.endRing = function(id,prevId,x,y){
         var newx = this.screenToCanvas(x,y)[0];
         var newy = this.screenToCanvas(x,y)[1];
-        var col = this.rings[prevId].color;
+        var col = this.colors[prevId];
         this.rings.push({id: id, type: 'end', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
         this.intervalOn(id);
+    };
+
+    this.clearMessage = function(type){
+        if(type=='touches'){
+            $('#messageTouchesBox div.info').empty();
+        }
+        else if(type=='target'){
+            $('#messageTargetBox div.info').empty();
+        }
+        else if(type=='changed'){
+            $('#messageChangedBox div.info').empty();
+        }
+    };
+
+    this.addMessage = function(type,col,x,y){
+        if(type=='touches'){
+            $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+        }
+        else if(type=='target'){
+            $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+        }
+        else if(type=='changed'){
+            $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+        }
     };
 
     this.init();

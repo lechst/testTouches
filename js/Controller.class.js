@@ -38,6 +38,35 @@ Controller = function(){
         $('#touchBox')[0].addEventListener('gestureend',this.gestureEnd(),false);
     };
 
+    this.getMessageParameters = function(e) {
+        this.view.clearMessage('touches');
+        for(var i=0; i < e.touches.length; i++){
+            var x = e.touches[i].pageX;
+            var y = e.touches[i].pageY;
+            var id = this.fingerId[e.touches[i].identifier];
+            var col = this.view.colors[id];
+            this.view.addMessage('touches',col,x,y);
+        }
+
+        this.view.clearMessage('target');
+        for(var i=0; i < e.targetTouches.length; i++){
+            var x = e.targetTouches[i].pageX;
+            var y = e.targetTouches[i].pageY;
+            var id = this.fingerId[e.targetTouches[i].identifier];
+            var col = this.view.colors[id];
+            this.view.addMessage('target',col,x,y);
+        }
+
+        this.view.clearMessage('changed');
+        for(var i=0; i < e.changedTouches.length; i++){
+            var x = e.changedTouches[i].pageX;
+            var y = e.changedTouches[i].pageY;
+            var id = this.fingerId[e.changedTouches[i].identifier];
+            var col = this.view.colors[id];
+            this.view.addMessage('changed',col,x,y);
+        }
+    };
+
     this.touchStart = function(){
         var that = this;
         return function(e){
@@ -52,32 +81,7 @@ Controller = function(){
                 that.fingerId[e.changedTouches[i].identifier] = id;
             }
 
-            $('#messageTouchesBox div.info').empty();
-            for(var i=0; i < e.touches.length; i++){
-                var x = e.touches[i].pageX;
-                var y = e.touches[i].pageY;
-                var id = that.fingerId[e.touches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
-
-            $('#messageTargetBox div.info').empty();
-            for(var i=0; i < e.targetTouches.length; i++){
-                var x = e.targetTouches[i].pageX;
-                var y = e.targetTouches[i].pageY;
-                var id = that.fingerId[e.targetTouches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
-
-            $('#messageChangedBox div.info').empty();
-            for(var i=0; i < e.changedTouches.length; i++){
-                var x = e.changedTouches[i].pageX;
-                var y = e.changedTouches[i].pageY;
-                var id = that.fingerId[e.changedTouches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
+            that.getMessageParameters(e);
         }
     };
 
@@ -95,32 +99,7 @@ Controller = function(){
                 that.view.moveRing(id,prevId,x,y);
             }
 
-            $('#messageTouchesBox div.info').empty();
-            for(var i=0; i < e.touches.length; i++){
-                var x = e.touches[i].pageX;
-                var y = e.touches[i].pageY;
-                var id = that.fingerId[e.touches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
-
-            $('#messageTargetBox div.info').empty();
-            for(var i=0; i < e.targetTouches.length; i++){
-                var x = e.targetTouches[i].pageX;
-                var y = e.targetTouches[i].pageY;
-                var id = that.fingerId[e.targetTouches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
-
-            $('#messageChangedBox div.info').empty();
-            for(var i=0; i < e.changedTouches.length; i++){
-                var x = e.changedTouches[i].pageX;
-                var y = e.changedTouches[i].pageY;
-                var id = that.fingerId[e.changedTouches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
+            that.getMessageParameters(e);
         }
     };
 
@@ -138,32 +117,7 @@ Controller = function(){
                 that.view.endRing(id,prevId,x,y);
             }
 
-            $('#messageTouchesBox div.info').empty();
-            for(var i=0; i < e.touches.length; i++){
-                var x = e.touches[i].pageX;
-                var y = e.touches[i].pageY;
-                var id = that.fingerId[e.touches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
-
-            $('#messageTargetBox div.info').empty();
-            for(var i=0; i < e.targetTouches.length; i++){
-                var x = e.targetTouches[i].pageX;
-                var y = e.targetTouches[i].pageY;
-                var id = that.fingerId[e.targetTouches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
-
-            $('#messageChangedBox div.info').empty();
-            for(var i=0; i < e.changedTouches.length; i++){
-                var x = e.changedTouches[i].pageX;
-                var y = e.changedTouches[i].pageY;
-                var id = that.fingerId[e.changedTouches[i].identifier];
-                var col = that.view.rings[id].color;
-                $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
-            }
+            that.getMessageParameters(e);
         }
     };
 
@@ -211,16 +165,16 @@ Controller = function(){
             that.view.startRing(id,x,y);
 
             var prevId = that.fingerId[e.identifier];
-            var col = that.view.rings[prevId].color;
+            var col = that.view.colors[prevId];
 
-            $('#messageTouchesBox div.info').empty();
-            $('#messageTouchesBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+            that.view.clearMessage('touches');
+            that.view.addMessage('touches',col,x,y);
 
-            $('#messageTargetBox div.info').empty();
-            $('#messageTargetBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+            that.view.clearMessage('target');
+            that.view.addMessage('target',col,x,y);
 
-            $('#messageChangedBox div.info').empty();
-            $('#messageChangedBox div.info').append('<p class="info" style="color:'+col+';">('+x+','+y+')</p>');
+            that.view.clearMessage('changed');
+            that.view.addMessage('changed',col,x,y);
 
         }
     };
