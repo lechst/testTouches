@@ -45,16 +45,16 @@ Controller = function(){
             var x = touchArray[i].pageX;
             var y = touchArray[i].pageY;
             var id = this.fingerId[touchArray[i].identifier];
-            var col = this.view.colors[id];
+            var col = this.view.getColor(id);
             this.view.messageBox.addMessage(type,col,x,y);
         }
     };
 
     this.getMessageParameters = function(e) {
 
-        this.getMessageParametersOfCertainType(e.touches,'touches');
-        this.getMessageParametersOfCertainType(e.targetTouches,'target');
-        this.getMessageParametersOfCertainType(e.changedTouches,'changed');
+        this.getMessageParametersOfCertainType(e.touches,'Touches');
+        this.getMessageParametersOfCertainType(e.targetTouches,'Target');
+        this.getMessageParametersOfCertainType(e.changedTouches,'Changed');
 
     };
 
@@ -66,16 +66,20 @@ Controller = function(){
             var id = this.eventId;
             this.eventId++;
             if(type=='start'){
-                this.view.startRing(id,x,y);
+                var col = this.view.generateColor();
+                this.view.setColor(col,id);
+                this.view.touchBox.startRing(col,id,x,y);
                 this.fingerId[e.changedTouches[i].identifier] = id;
             }
             else if(type=='move'){
                 var prevId = this.fingerId[e.changedTouches[i].identifier];
-                this.view.moveRing(id,prevId,x,y);
+                var col = this.view.getColor(prevId);
+                this.view.touchBox.moveRing(col,id,x,y);
             }
             else if(type=='end'){
                 var prevId = this.fingerId[e.changedTouches[i].identifier];
-                this.view.endRing(id,prevId,x,y);
+                var col = this.view.getColor(prevId);
+                this.view.touchBox.endRing(col,id,x,y);
             }
         }
         this.getMessageParameters(e);
@@ -136,19 +140,18 @@ Controller = function(){
 
             that.fingerId[e.identifier] = id;
 
-            that.view.startRing(id,x,y);
+            var col = that.view.generateColor();
+            that.view.setColor(col,id);
+            that.view.touchBox.startRing(col,id,x,y);
 
-            var prevId = that.fingerId[e.identifier];
-            var col = that.view.colors[prevId];
+            that.view.messageBox.clearMessage('Touches');
+            that.view.messageBox.addMessage('Touches',col,x,y);
 
-            that.view.messageBox.clearMessage('touches');
-            that.view.messageBox.addMessage('touches',col,x,y);
+            that.view.messageBox.clearMessage('Target');
+            that.view.messageBox.addMessage('Target',col,x,y);
 
-            that.view.messageBox.clearMessage('target');
-            that.view.messageBox.addMessage('target',col,x,y);
-
-            that.view.messageBox.clearMessage('changed');
-            that.view.messageBox.addMessage('changed',col,x,y);
+            that.view.messageBox.clearMessage('Changed');
+            that.view.messageBox.addMessage('Changed',col,x,y);
 
         }
     };

@@ -8,27 +8,15 @@ MessageBox = function(){
     };
 
     this.clearMessage = function(type){
-        if(type=='touches'){
-            this.mainMessageTouches.innerHTML = '';
-        }
-        else if(type=='target'){
-            this.mainMessageTarget.innerHTML = '';
-        }
-        else if(type=='changed'){
-            this.mainMessageChanged.innerHTML = '';
-        }
+        this['mainMessage'+type].innerHTML = '';
+    };
+
+    this.singleMessage = function(col,x,y){
+        return '<p class="infoP" style="color:'+col+';">('+x+','+y+')</p>';
     };
 
     this.addMessage = function(type,col,x,y){
-        if(type=='touches'){
-            this.mainMessageTouches.innerHTML = this.mainMessageTouches.innerHTML + '<p class="infoP" style="color:'+col+';">('+x+','+y+')</p>';
-        }
-        else if(type=='target'){
-            this.mainMessageTarget.innerHTML = this.mainMessageTarget.innerHTML + '<p class="infoP" style="color:'+col+';">('+x+','+y+')</p>';
-        }
-        else if(type=='changed'){
-            this.mainMessageChanged.innerHTML = this.mainMessageChanged.innerHTML + '<p class="infoP" style="color:'+col+';">('+x+','+y+')</p>';
-        }
+        this['mainMessage'+type].innerHTML = this['mainMessage'+type].innerHTML + this.singleMessage(col,x,y);
     };
 
     this.init();

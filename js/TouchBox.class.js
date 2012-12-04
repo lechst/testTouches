@@ -79,6 +79,33 @@ TouchBox = function(){
 
     };
 
+    this.screenToCanvas = function(x,y){
+        var newx = x - 12;
+        var newy = y - 12;
+        return [newx,newy];
+    };
+
+    this.startRing = function(col,id,x,y){
+        var newx = this.screenToCanvas(x,y)[0];
+        var newy = this.screenToCanvas(x,y)[1];
+        this.rings.push({id: id, type: 'start', color: col, x: newx, y: newy, r: 0, width: 0, alpha: 0});
+        this.intervalOn(id);
+    };
+
+    this.moveRing = function(col,id,x,y){
+        var newx = this.screenToCanvas(x,y)[0];
+        var newy = this.screenToCanvas(x,y)[1];
+        this.rings.push({id: id, type: 'move', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
+        this.intervalOn(id);
+    };
+
+    this.endRing = function(col,id,x,y){
+        var newx = this.screenToCanvas(x,y)[0];
+        var newy = this.screenToCanvas(x,y)[1];
+        this.rings.push({id: id, type: 'end', color: col, x: newx, y: newy, r: 20, width: 5, alpha: 1});
+        this.intervalOn(id);
+    };
+
     this.init();
 
 };
