@@ -21,30 +21,32 @@ Controller = function(){
 
     };
 
+    this.mainTouchBox = document.getElementById('touchBox');
+
     this.bindMouseEvents = function() {
-        this.view.mainTouchBox.addEventListener('click',this.clickEvent());
+        this.mainTouchBox.addEventListener('click',this.clickEvent());
     };
 
     this.bindTouchEvents = function() {
-        this.view.mainTouchBox.addEventListener('touchstart',this.touchStart(),false);
-        this.view.mainTouchBox.addEventListener('touchmove',this.touchMove(),false);
-        this.view.mainTouchBox.addEventListener('touchend',this.touchEnd(),false);
+        this.mainTouchBox.addEventListener('touchstart',this.touchStart(),false);
+        this.mainTouchBox.addEventListener('touchmove',this.touchMove(),false);
+        this.mainTouchBox.addEventListener('touchend',this.touchEnd(),false);
     };
 
     this.bindGestureEvents = function() {
-        this.view.mainTouchBox.addEventListener('gesturestart',this.gestureStart(),false);
-        this.view.mainTouchBox.addEventListener('gesturechange',this.gestureChange(),false);
-        this.view.mainTouchBox.addEventListener('gestureend',this.gestureEnd(),false);
+        this.mainTouchBox.addEventListener('gesturestart',this.gestureStart(),false);
+        this.mainTouchBox.addEventListener('gesturechange',this.gestureChange(),false);
+        this.mainTouchBox.addEventListener('gestureend',this.gestureEnd(),false);
     };
 
     this.getMessageParametersOfCertainType = function(touchArray,type){
-        this.view.clearMessage(type);
+        this.view.messageBox.clearMessage(type);
         for(var i=0; i < touchArray.length; i++){
             var x = touchArray[i].pageX;
             var y = touchArray[i].pageY;
             var id = this.fingerId[touchArray[i].identifier];
             var col = this.view.colors[id];
-            this.view.addMessage(type,col,x,y);
+            this.view.messageBox.addMessage(type,col,x,y);
         }
     };
 
@@ -139,14 +141,14 @@ Controller = function(){
             var prevId = that.fingerId[e.identifier];
             var col = that.view.colors[prevId];
 
-            that.view.clearMessage('touches');
-            that.view.addMessage('touches',col,x,y);
+            that.view.messageBox.clearMessage('touches');
+            that.view.messageBox.addMessage('touches',col,x,y);
 
-            that.view.clearMessage('target');
-            that.view.addMessage('target',col,x,y);
+            that.view.messageBox.clearMessage('target');
+            that.view.messageBox.addMessage('target',col,x,y);
 
-            that.view.clearMessage('changed');
-            that.view.addMessage('changed',col,x,y);
+            that.view.messageBox.clearMessage('changed');
+            that.view.messageBox.addMessage('changed',col,x,y);
 
         }
     };
@@ -189,6 +191,7 @@ Controller = function(){
             var h = window.innerHeight;
             var w = window.innerWidth;
             that.view.resizeLayout(h,w);
+            that.mainTouchBox = document.getElementById('touchBox');
             that.init();
         }
 
