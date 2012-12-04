@@ -68,18 +68,18 @@ Controller = function(){
             if(type=='start'){
                 var col = this.view.generateColor();
                 this.view.setColor(col,id);
-                this.view.touchBox.startRing(col,id,x,y);
+                this.view.touchBox.ringObj.changeRing('start',col,id,x,y);
                 this.fingerId[e.changedTouches[i].identifier] = id;
             }
             else if(type=='move'){
                 var prevId = this.fingerId[e.changedTouches[i].identifier];
                 var col = this.view.getColor(prevId);
-                this.view.touchBox.moveRing(col,id,x,y);
+                this.view.touchBox.ringObj.changeRing('move',col,id,x,y);
             }
             else if(type=='end'){
                 var prevId = this.fingerId[e.changedTouches[i].identifier];
                 var col = this.view.getColor(prevId);
-                this.view.touchBox.endRing(col,id,x,y);
+                this.view.touchBox.ringObj.changeRing('end',col,id,x,y);
             }
         }
         this.getMessageParameters(e);
@@ -142,7 +142,7 @@ Controller = function(){
 
             var col = that.view.generateColor();
             that.view.setColor(col,id);
-            that.view.touchBox.startRing(col,id,x,y);
+            that.view.touchBox.ringObj.changeRing('start',col,id,x,y);
 
             that.view.messageBox.clearMessage('Touches');
             that.view.messageBox.addMessage('Touches',col,x,y);
