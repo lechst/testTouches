@@ -13,7 +13,7 @@ View = function() {
     this.mainLayout = function(){
 
         this.mainBody = document.body;
-        this.mainBody.innerHTML = '<div id="mainDiv"><div id="touchBox"><canvas></canvas><div id="targetBox"></div></div><div id="messageBox"><div id="messageTouchBox"><div id="messageTouchesBox"><p class="title">touches:</p><div class="info"></div></div><div id="messageTargetBox"><p class="title">target:</p><div class="info"></div></div><div id="messageChangedBox"><p class="title">changed:</p><div class="info"></div></div></div></div></div>';
+        this.mainBody.innerHTML = '<div id="mainDiv"><div id="touchBox"><canvas></canvas><div id="targetBox"></div></div><div id="messageBox"><div id="messageTouchBox"><div id="messageTouchesBox"><p class="title">touches:</p><div class="info"></div></div><div id="messageTargetBox"><p class="title">target:</p><div class="info"></div></div><div id="messageChangedBox"><p class="title">changed:</p><div class="info"></div></div></div><div id="messageLogBox"></div></div></div>';
 
     };
 

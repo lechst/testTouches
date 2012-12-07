@@ -22,15 +22,19 @@ Controller = function(){
     };
 
     this.mainTouchBox = document.getElementById('touchBox');
+    this.mainLogBox = document.getElementById('messageLogBox');
+    this.mainLogInstr = document.getElementsByClassName('logInstr')[0];
 
     this.bindMouseEvents = function() {
         this.mainTouchBox.addEventListener('click',this.clickEvent());
+        this.mainLogBox.addEventListener('click',this.clickEvent2());
     };
 
     this.bindTouchEvents = function() {
         this.mainTouchBox.addEventListener('touchstart',this.touchStart(),false);
         this.mainTouchBox.addEventListener('touchmove',this.touchMove(),false);
         this.mainTouchBox.addEventListener('touchend',this.touchEnd(),false);
+        this.mainLogBox.addEventListener('touchstart',this.touchLogShow(),false);
     };
 
     this.bindGestureEvents = function() {
@@ -156,6 +160,54 @@ Controller = function(){
         }
     };
 
+    this.clickEvent2 = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+            that.mainLogBox.removeEventListener('click',arguments.callee,false);
+            that.view.logBox.intervalShowOn();
+            that.mainLogInstr.addEventListener('click',that.clickEvent3());
+
+        }
+    };
+
+    this.clickEvent3 = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+            that.mainLogInstr.removeEventListener('click',arguments.callee,false);
+            that.view.logBox.intervalHideOn();
+            that.mainLogBox.addEventListener('click',that.clickEvent2());
+
+        }
+    };
+
+    this.touchLogShow = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+            that.mainLogBox.removeEventListener('touchstart',arguments.callee,false);
+            that.view.logBox.intervalShowOn();
+            that.mainLogInstr.addEventListener('touchstart',that.touchLogHide(),false);
+
+        }
+    };
+
+    this.touchLogHide = function(){
+        var that = this;
+        return function(e){
+            e.preventDefault();
+
+            that.mainLogInstr.removeEventListener('touchstart',arguments.callee,false);
+            that.view.logBox.intervalHideOn();
+            that.mainLogBox.addEventListener('touchstart',that.touchLogShow(),false);
+
+        }
+    };
+
     this.checkDevice = function(){
         var ua = navigator.userAgent;
         var checker = {
@@ -195,6 +247,8 @@ Controller = function(){
             var w = window.innerWidth;
             that.view.resizeLayout(h,w);
             that.mainTouchBox = document.getElementById('touchBox');
+            that.mainLogBox = document.getElementById('messageLogBox');
+            that.mainLogInstr = document.getElementsByClassName('logInstr')[0];
             that.init();
         }
 

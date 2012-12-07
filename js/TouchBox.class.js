@@ -23,21 +23,11 @@ TouchBox = function(){
         changeRing: function(type,col,id,x,y){
             var newx = newThis.screenToCanvas(x,y)[0];
             var newy = newThis.screenToCanvas(x,y)[1];
-            if(type=='start'){
-                var r = this.animParam.startRadius;
-                var w = this.animParam.startWidth;
-                var a = this.animParam.startAlpha;
-            }
-            else if(type=='move'){
-                var r = this.animParam.moveRadius;
-                var w = this.animParam.moveWidth;
-                var a = this.animParam.moveAlpha;
-            }
-            else if(type=='end'){
-                var r = this.animParam.endRadius;
-                var w = this.animParam.endWidth;
-                var a = this.animParam.endAlpha;
-            }
+
+            var r = this.animParam[type+'Radius'];
+            var w = this.animParam[type+'Width'];
+            var a = this.animParam[type+'Alpha'];
+
             this.rings.push({id: id, type: type, color: col, x: newx, y: newy, r: r, width: w, alpha: a});
             newThis.intervalOn(id);
         },
