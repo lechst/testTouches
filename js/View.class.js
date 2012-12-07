@@ -6,6 +6,7 @@ View = function() {
         this.mainLayout();
         this.touchBox = new TouchBox();
         this.messageBox = new MessageBox();
+        this.logBox = new LogBox();
 
     };
 

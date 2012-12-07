@@ -1,0 +1,3 @@
+LogBox = function(){
+    
+};
